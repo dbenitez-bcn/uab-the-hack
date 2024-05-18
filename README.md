@@ -2,6 +2,13 @@
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## GET STARTED
+
+```bash
+npm install
+firebase login
+```
+
 ## Setup
 
 Make sure to install the dependencies:
