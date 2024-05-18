@@ -1,37 +1,68 @@
 <template>
-  <v-form ref="form" class="ma-3 d-flex flex-column align-center">
-    <v-card elevation="8" width="100%" class="mb-4 rounded-lg">
-      <v-select
-        :items="municipis"
-        label="On vius?"
+  <Transition>
+    <v-form
+      v-if="stage == 0"
+      ref="form"
+      class="ma-3 d-flex flex-column align-center"
+    >
+      <v-card elevation="8" width="100%" class="mb-4 rounded-lg">
+        <v-select
+          :items="municipis"
+          label="On vius?"
+          color="primary"
+          bg-color="white"
+          width="100%"
+          class="mb-0"
+          @update:model-value="onLocationSelected"
+        ></v-select>
+      </v-card>
+      <v-date-picker
         color="primary"
-        bg-color="white"
+        header=""
+        :hide-header="true"
+        class="mb-2 mt-0 rounded-lg"
         width="100%"
-        class="mb-0"
-        @update:model-value="onLocationSelected"
-      ></v-select>
-    </v-card>
-    <v-date-picker
-      color="primary"
-      header=""
-      :hide-header="true"
-      class="mb-2 mt-0 rounded-lg"
-      width="100%"
-      elevation="8"
-      @update:model-value="onDateChanged"
-    ></v-date-picker>
-    <v-card elevation="8" class="my-2 rounded-lg" width="100%">
-      <v-card-title>A quina hora?</v-card-title>
-      <div class="pa-2">
-        <v-chip-group column selected-class="text-primary" @update:model-value="onHourSelected">
-          <v-chip v-for="hour in selectedHours" :key="hour">
-            {{ hour }}
-          </v-chip>
-        </v-chip-group>
-      </div>
-    </v-card>
-    <v-btn color="primary" rounded width="100%" class="my-2" @click="book">Continuar</v-btn>
-  </v-form>
+        elevation="8"
+        @update:model-value="onDateChanged"
+      ></v-date-picker>
+      <v-card elevation="8" class="my-2 rounded-lg" width="100%">
+        <v-card-title>A quina hora?</v-card-title>
+        <div class="pa-2">
+          <v-chip-group
+            column
+            selected-class="text-primary"
+            @update:model-value="onHourSelected"
+          >
+            <v-chip v-for="hour in selectedHours" :key="hour">
+              {{ hour }}
+            </v-chip>
+          </v-chip-group>
+        </div>
+      </v-card>
+      <v-btn color="primary" rounded width="100%" class="my-2" @click="book"
+        >Continuar</v-btn
+      >
+    </v-form>
+  </Transition>
+  <Transition>
+    <div class="d-flex justify-center py-2"
+        v-if="stage == 1">
+      <v-progress-circular
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+  </Transition>
+  <Transition>
+    <div v-if="stage == 2">
+      <v-alert
+        :text='"Acabes de reservar per el dia " + selectedDate.getDate() + "/" + selectedDate.getMonth() + " a les " + selectedHour'
+        title="Reserva exitosa"
+        type="success"
+        density="compact"
+      ></v-alert>
+    </div>
+  </Transition>
 </template>
 
 <script>
@@ -15988,17 +16019,30 @@ export default {
         this.hoursCounter++;
       }
     },
-    book() {
-      this.stage = 1;
-      console.log("Stage:", this.stage);
+    async book() {
+      this.stage = -1;
       setTimeout(() => {
-        this.stage = 2;
-        console.log("Stage:", this.stage);
-      }, 3000);
+        this.stage = 1;
+        setTimeout(() => {
+          this.stage = -1;
+          setTimeout(() => {
+            this.stage = 2;
+          }, 1000);
+        }, 3000);
+      }, 1000);
     },
   },
 };
 </script>
 
 <style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
