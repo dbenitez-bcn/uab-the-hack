@@ -24,6 +24,6 @@ logs
 !.env.example
 
 
-# Python
+# JS
+functions/node_modules/
 *.local
-functions/venv
