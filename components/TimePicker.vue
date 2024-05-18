@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="0" class="my-2" width="100%">
+  <v-card elevation="8" class="my-2 rounded-lg" width="100%">
     <v-card-title>A quina hora?</v-card-title>
     <div class="pa-2">
       <v-chip-group column 
