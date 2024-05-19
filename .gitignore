@@ -24,6 +24,7 @@ logs
 !.env.example
 
 
-# JS
-functions/node_modules/
+# Python
+functions/venv
+functions/__pycache__
 *.local
